@@ -29,6 +29,7 @@ public class PlayerGameController : MonoBehaviour
         if(Input.GetKey(KeyCode.UpArrow))
         {
             Jump();
+            
         }
     }
     void Move()
@@ -41,7 +42,10 @@ public class PlayerGameController : MonoBehaviour
         if (Grounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpHeight);
+            AudioManager.audio.PlaySound(AudioManager.audio.AcJump, 1f);
+
         }
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -79,6 +83,7 @@ public class PlayerGameController : MonoBehaviour
         if(rb.velocity.y > .1f)
         {
             state = ValuesAnim.jumping;
+            
         }
         else if(rb.velocity.y < -.1f)
         {

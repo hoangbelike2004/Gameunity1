@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Obstacle
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -43,9 +44,12 @@ TagManager:
   - name: BackGround
     uniqueID: 4090324927
     locked: 0
+  - name: terrain
+    uniqueID: 3484231563
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: terrain
-    uniqueID: 3484231563
+  - name: Start
+    uniqueID: 1736975561
     locked: 0

@@ -16,6 +16,7 @@ public class Playerlife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
+            AudioManager.audio.PlaySound(AudioManager.audio.Acdie, 1f);
             PlayerDead();
         }
     }
