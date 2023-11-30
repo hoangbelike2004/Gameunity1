@@ -28,6 +28,6 @@ public class Playerlife : MonoBehaviour
     }
     public void ReLoad()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -7,11 +7,13 @@ TagManager:
   - Ground
   - Obstacle
   - Coin
+  - win
+  - Pine
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - 

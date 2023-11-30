@@ -15,5 +15,11 @@ public class AddCoin : MonoBehaviour
             textM.text = "Melon: " + coinID;
             AudioManager.audio.PlaySound(AudioManager.audio.AcaetingCoin, 1f);
         }
+        if (collision.gameObject.tag == "Pine")
+        {
+            coinID++;
+            textM.text = "Pine: " + coinID;
+            AudioManager.audio.PlaySound(AudioManager.audio.AcaetingCoin, 1f);
+        }
     }
 }

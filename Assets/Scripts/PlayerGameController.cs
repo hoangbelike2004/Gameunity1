@@ -11,8 +11,7 @@ public class PlayerGameController : MonoBehaviour
     SpriteRenderer spr;
     Animator animator;
     private enum ValuesAnim { idle,runing,jumping,falling}
-    private ValuesAnim state = ValuesAnim.idle;
-    private float move = 0f;
+    private float move;
     void Start()
     {
        rb = GetComponent<Rigidbody2D>(); 
@@ -24,7 +23,6 @@ public class PlayerGameController : MonoBehaviour
     void Update()
     {
         Move();
-        StateAnimUpdate();
         StateAnimUpdate();
         if(Input.GetKey(KeyCode.UpArrow))
         {
@@ -41,6 +39,7 @@ public class PlayerGameController : MonoBehaviour
     {
         if (Grounded)
         {
+            Debug.Log("jump");
             rb.velocity = new Vector2(rb.velocity.x, JumpHeight);
             AudioManager.audio.PlaySound(AudioManager.audio.AcJump, 1f);
 
@@ -52,6 +51,7 @@ public class PlayerGameController : MonoBehaviour
         if(collision.gameObject.tag == "Ground")
         {
             Grounded = true;
+            Debug.Log("cham");
             
         }
     }
@@ -59,6 +59,7 @@ public class PlayerGameController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Ground")
         {
+            Debug.Log(" het cham");
             Grounded =false;
         }
     }
