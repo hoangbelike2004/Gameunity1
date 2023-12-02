@@ -32,7 +32,7 @@ public class JumpingCushion : MonoBehaviour
                     Pla.GetComponent<Rigidbody2D>().velocity = new Vector2(Pla.GetComponent<Rigidbody2D>().velocity.x, Force);
             
         }
-        else if(!IsplayJump()&& time > 1f)
+        else if(!IsplayJump()&& time > .55f)
         {
             time = 0;
             animator.SetBool("Cs", false);

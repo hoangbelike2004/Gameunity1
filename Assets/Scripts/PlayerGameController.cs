@@ -10,6 +10,8 @@ public class PlayerGameController : MonoBehaviour
     private bool Grounded = false;
     SpriteRenderer spr;
     Animator animator;
+    private BoxCollider2D col;
+    [SerializeField] private LayerMask GR;
     private enum ValuesAnim { idle,runing,jumping,falling}
     private float move;
     void Start()
@@ -17,6 +19,7 @@ public class PlayerGameController : MonoBehaviour
        rb = GetComponent<Rigidbody2D>(); 
         spr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        col = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -37,7 +40,7 @@ public class PlayerGameController : MonoBehaviour
     }
     void Jump()
     {
-        if (Grounded)
+        if (isPlay())
         {
             Debug.Log("jump");
             rb.velocity = new Vector2(rb.velocity.x, JumpHeight);
@@ -46,22 +49,9 @@ public class PlayerGameController : MonoBehaviour
         }
 
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+   private bool isPlay()
     {
-        if(collision.gameObject.tag == "Ground")
-        {
-            Grounded = true;
-            Debug.Log("cham");
-            
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "Ground")
-        {
-            Debug.Log(" het cham");
-            Grounded =false;
-        }
+        return Physics2D.BoxCast(col.bounds.center, col.bounds.size, 0, Vector2.down, .1f, GR);
     }
     private void StateAnimUpdate()
     {
