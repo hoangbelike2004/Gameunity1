@@ -11,6 +11,14 @@ public class PlayerGameController : MonoBehaviour
     SpriteRenderer spr;
     Animator animator;
     private BoxCollider2D col;
+    private bool canDash = true;
+    private bool Dashing;
+    private float DashPower=24f;
+    private float Dashtime = 0.2f;
+    private float DashCoolDown = 1f;
+    private float tmp;
+
+    [SerializeField] private TrailRenderer tr;
     [SerializeField] private LayerMask GR;
     private enum ValuesAnim { idle,runing,jumping,falling}
     private float move;
@@ -20,10 +28,11 @@ public class PlayerGameController : MonoBehaviour
         spr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         col = GetComponent<BoxCollider2D>();
+        tr = GetComponent<TrailRenderer>();   
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         Move();
         StateAnimUpdate();
@@ -32,11 +41,14 @@ public class PlayerGameController : MonoBehaviour
             Jump();
             
         }
+
     }
     void Move()
     {
         move = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(move * speed, rb.velocity.y);
+        StartCoroutine(Dash());
+
     }
     void Jump()
     {
@@ -44,6 +56,7 @@ public class PlayerGameController : MonoBehaviour
         {
             Debug.Log("jump");
             rb.velocity = new Vector2(rb.velocity.x, JumpHeight);
+            StartCoroutine(Dash());
             AudioManager.audio.PlaySound(AudioManager.audio.AcJump, 1f);
 
         }
@@ -81,6 +94,18 @@ public class PlayerGameController : MonoBehaviour
             state = ValuesAnim.falling;
         }
         animator.SetInteger("State",(int)state);
+    }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        Dashing = true;
+        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.RightArrow)) {
+            tr.emitting = true;
+        }
+        else { tr.emitting = false; }
+        yield return null;
+        
     }
     
 }
