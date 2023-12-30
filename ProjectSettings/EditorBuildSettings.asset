@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Start.unity
     guid: be3263ff7e5c77a4f96e84274d5276ba
   - enabled: 1
+    path: Assets/Scenes/SkinSelection.unity
+    guid: 2edf0d0637cfc094c8af4c1281ee075d
+  - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: a4354f935d0c3e349a955061831a7a59
   - enabled: 1

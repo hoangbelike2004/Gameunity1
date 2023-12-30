@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class PlayerGameController : MonoBehaviour
 {
-    Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
     public float speed = 5f;
     public float JumpHeight = 0f;
-    private bool Grounded = false;
+
     SpriteRenderer spr;
     Animator animator;
     private BoxCollider2D col;
-    private bool canDash = true;
-    private bool Dashing;
-    private float DashPower=24f;
-    private float Dashtime = 0.2f;
+    public bool canDash = true;
+    public bool Dashing;
+    public float Dashtime = 0.5f;
     private float DashCoolDown = 1f;
-    private float tmp;
-
+    [SerializeField] private float dashVelocity;
     [SerializeField] private TrailRenderer tr;
     [SerializeField] private LayerMask GR;
     private enum ValuesAnim { idle,runing,jumping,falling}
@@ -27,27 +25,41 @@ public class PlayerGameController : MonoBehaviour
        rb = GetComponent<Rigidbody2D>(); 
         spr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        col = GetComponent<BoxCollider2D>();
-        tr = GetComponent<TrailRenderer>();   
+        col = GetComponent<BoxCollider2D>();   
     }
 
     // Update is called once per frame
     private void Update()
     {
-        Move();
+        move = Input.GetAxis("Horizontal");
+        if (!Dashing)//check proviso when dashing then method Move() not called
+        {
+            Move();//when dashing then method move don''t run
+        }
+       
         StateAnimUpdate();
         if(Input.GetKey(KeyCode.UpArrow))
         {
             Jump();
             
         }
+        if(Input.GetKey(KeyCode.Space) && canDash)
+        {
+            Debug.Log("An");
+            StartCoroutine(Effects());
+        }
+        if (Dashing)
+        {
+            return;
+        }
 
     }
+  
     void Move()
     {
-        move = Input.GetAxisRaw("Horizontal");
+        
         rb.velocity = new Vector2(move * speed, rb.velocity.y);
-        StartCoroutine(Dash());
+        
 
     }
     void Jump()
@@ -56,7 +68,7 @@ public class PlayerGameController : MonoBehaviour
         {
             Debug.Log("jump");
             rb.velocity = new Vector2(rb.velocity.x, JumpHeight);
-            StartCoroutine(Dash());
+         
             AudioManager.audio.PlaySound(AudioManager.audio.AcJump, 1f);
 
         }
@@ -96,16 +108,38 @@ public class PlayerGameController : MonoBehaviour
         animator.SetInteger("State",(int)state);
     }
 
-    private IEnumerator Dash()
+    private IEnumerator Effects()
     {
         canDash = false;
         Dashing = true;
-        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.RightArrow)) {
-            tr.emitting = true;
+        if(rb.velocity.x > 0f)
+        {
+            rb.velocity = new Vector2(move * 15f, rb.velocity.y);
+            spr.flipX = false;
+            animator.SetInteger("State", 2);
         }
-        else { tr.emitting = false; }
-        yield return null;
-        
+        if (rb.velocity.x < 0f)
+        {
+            rb.velocity = new Vector2( move * 15f, rb.velocity.y);
+            spr.flipX = true;
+            animator.SetInteger("State", 2);
+        }
+        else if (rb.velocity.x == 0f&&spr.flipX == false)
+        {
+            rb.velocity = new Vector2(move + 15f, rb.velocity.y); animator.SetInteger("State", 2);
+        }
+        else if (rb.velocity.x == 0f && spr.flipX == true)//player stand still and dash
+        {
+            rb.velocity = new Vector2(-Mathf.Abs(move + 15f), rb.velocity.y); animator.SetInteger("State", 2);
+        }
+        Debug.Log("Luot");
+        tr.emitting = true;
+        yield return new WaitForSeconds(Dashtime);//time dasing
+        tr.emitting = false;//turn on effect TrailRenderer
+        Dashing=false;//after dash time then not dasing
+        Debug.Log("Dung");
+       yield return new WaitForSeconds(DashCoolDown);
+        canDash = true;//can dash affter 1 second
     }
     
 }

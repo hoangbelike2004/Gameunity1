@@ -10,6 +10,9 @@ public class JumpingCushion : MonoBehaviour
     private BoxCollider2D coll;
     [SerializeField] private LayerMask LayerMaskPlayer;
     [SerializeField] private GameObject Pla;
+    [SerializeField] private GameObject NinjaMan;
+    [SerializeField] private GameObject PinkMan;
+    [SerializeField] private GameObject MaskDude;
     [SerializeField] private float Force;//Force of cushion
     private Animator animator;
     private float time;
@@ -28,8 +31,23 @@ public class JumpingCushion : MonoBehaviour
         if (IsplayJump())
         {
             animator.SetBool("Cs", true);
+            if (ReplaceSkin.ReplaceSkins.SkinNR == 0)
+            {
+                Pla.GetComponent<Rigidbody2D>().velocity = new Vector2(Pla.GetComponent<Rigidbody2D>().velocity.x, Force);
+            }
+            else if (ReplaceSkin.ReplaceSkins.SkinNR == 1)
+            {
+                PinkMan.GetComponent<Rigidbody2D>().velocity = new Vector2(Pla.GetComponent<Rigidbody2D>().velocity.x, Force);
+            }
+            else if (ReplaceSkin.ReplaceSkins.SkinNR == 2)
+            {
+                NinjaMan.GetComponent<Rigidbody2D>().velocity = new Vector2(Pla.GetComponent<Rigidbody2D>().velocity.x, Force);
+            }
+            else if (ReplaceSkin.ReplaceSkins.SkinNR == 3)
+            {
+                MaskDude.GetComponent<Rigidbody2D>().velocity = new Vector2(Pla.GetComponent<Rigidbody2D>().velocity.x, Force);
+            }
             
-                    Pla.GetComponent<Rigidbody2D>().velocity = new Vector2(Pla.GetComponent<Rigidbody2D>().velocity.x, Force);
             
         }
         else if(!IsplayJump()&& time > .55f)
